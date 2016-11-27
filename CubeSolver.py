@@ -80,35 +80,40 @@ def RightRubikCube():
     
     
 def Solve():
-    global SideText, side, all_sides
+    global SideText, side, all_sides, ErrorText
+    ErrorText.set("")
     print("In the solve function")
     colors = ["Red", 0, "White", 0, "Yellow", 0, "Green", 0, "Blue", 0, "Orange", 0, "dark gray", 0]  
 
     # Checks to see if there are any gray spots, or if there are more than 9 of a single color
-    for i in range(1, len(all_sides)):
+    for i in xrange(1, len(all_sides),2):
         # 7 Colors to look for
-        print("I am in side " + str(all_sides[i]))
+        print("I am in side " + str(all_sides[i-1]))
         time.sleep(5)
-        for j in range(1, (len(colors)/2)):
-            indexing = 0
+        for j in xrange(1, len(colors),2):
+            # print("j is " + str(j))
             print("I am looking for color " + str(colors[j-1]))
-            print("Showing side \"" + str(all_sides[i-1]) + "\" colors\n" + str(all_sides[i][0]))
-            time.sleep(5)
-            # Check for 9 of each color
-            for z in range(1, 9):
-                # indexing = all_sides[i][all_sides[i].index(colors[j-1], indexing)]
-                indices = [i for i, x in enumerate(all_sides[i]) if x == colors[j-1]]
-                print("There are " + str(len(indices)) + " of the color " + colors[j-1])
-                time.sleep(4)
-                if indexing == -1:
-                    break
-                colors[i] += 1
-                print("There is " + str(colors[i]) + " of Color " + colors[i-1])
-                if colors[13] != 0:
-                    print("ERROR!! You have unfilled out spots")
-                    Rubik_Info.RubikSetup(canvas, all_sides[i][all_sides.index(i+1)])
-            j += 1
-        i += 1
+            # print("Showing side \"" + str(all_sides[i-1]) + "\" colors\n" + str(all_sides[i]))
+            # time.sleep(5)
+            
+            # indexing = all_sides[i][all_sides[i].index(colors[j-1], indexing)]
+            indices = [q for q, x in enumerate(all_sides[i]) if x == colors[j-1]]
+            print("There are " + str(len(indices)) + " of the color " + str(colors[j-1]))
+            # time.sleep(4)
+            colors[j] += len(indices)
+            print("There is a total of " + str(colors[j]) + " of  color " + colors[j-1])
+            if (colors[j] > 9):
+                ErrorText.set("Error, there is too many " + colors[j-1] + "\'s on this cube, there is a max of 9 of any color")
+                return
+            
+            # print("There is " + str(colors[i]) + " of Color " + colors[j-1])
+            if colors[13] != 0:
+                ErrorText.set("ERROR!! You have unfilled out spots")
+                # print(str(all_sides[i]))
+                Rubik_Info.RubikSetup(canvas, all_sides[i])
+                side = all_sides[i-1]
+                SideText.set("You are currently on side: " + side)
+                return
 root = Tk()
 
 menu = Menu(root, tearoff= 0)
@@ -148,13 +153,20 @@ side = "Top"
 SideText = StringVar()
 SideText.set("You are currently on side: " + side)
 outputs = Canvas(root, width = 30, height = 20)
-SideFormatter = Label(root, textvariable=SideText)  #, font= ("Helvetica",10), width = 12, height = 12, anchor=CENTER).pack()
+SideFormatter = Label(root, textvariable=SideText)
+
+ErrorText = StringVar()
+ErrorText.set("")
+# outputs = Canvas(root, width = 30, height = 20)
+ErrorFormatter = Label(root, textvariable=ErrorText)
+
 Rubik_Info.RubikSetup(canvas, all_sides[all_sides.index(side)+1])
 
 
 TopButton.pack(side=TOP)
 BackButton.pack(side=TOP)
 SideFormatter.pack(side=TOP)
+ErrorFormatter.pack(side=TOP)
 # outputs.pack(side=TOP)
 BottomButton.pack(side=BOTTOM)
 FrontButton.pack(side=BOTTOM)

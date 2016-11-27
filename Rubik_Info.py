@@ -39,7 +39,7 @@ def CreateCube():
              "dark gray", "dark gray", "dark gray"]
 
     frontside = ["dark gray", "dark gray", "dark gray",
-                 "dark gray", "white", "dark gray",
+                 "dark gray", "White", "dark gray",
                  "dark gray", "dark gray", "dark gray"]
 
     master = ["Front",frontside, "Back",side1, "Left",side2, "Right",side3, "Top",side4, "Bottom",side5]
