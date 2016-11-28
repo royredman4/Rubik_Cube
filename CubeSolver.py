@@ -1,5 +1,6 @@
 import time
 import Rubik_Info
+import Solving_algorithm
 
 try:
     # for Python 2
@@ -8,7 +9,8 @@ except ImportError:
     # for Python 3
     from tkinter import *
     
-    
+
+# This Function sets the color that is chosen to the square it was clicked on
 def hello(color):
     global coordinates, side, all_sides
     print("Hello at " + str(coordinates[0]) + " " + str(coordinates[1]))
@@ -16,7 +18,9 @@ def hello(color):
     Rubik_Info.ChangeColor(canvas, color, coordinates)
     Rubik_Info.Update_Array(all_sides[all_sides.index(side)+1], side, color, coordinates)
     
-    
+
+# When the mouse is clicked on a certain coordinates, then it will display
+# The menu. When clicked outside the coordinates, then the menu dissapears
 def callback(event):
     global Clicked, coordinates
     print("Hello World at coordinates " + str(event.x) + " " + str(event.y))
@@ -30,7 +34,8 @@ def callback(event):
         Clicked = False
         menu.unpost()
         
-        
+
+# This adjusts the cube to the Top side when the button is clicked
 def TopRubikCube():
     print("I am in my top section")
     global SideText, side, all_sides
@@ -39,6 +44,7 @@ def TopRubikCube():
     Rubik_Info.RubikSetup(canvas, all_sides[all_sides.index(side)+1])
     
     
+# This adjusts the cube to the Back side when the button is clicked
 def BackRubikCube():
     print("I am in my Back section")
     global SideText, side, all_sides
@@ -46,7 +52,8 @@ def BackRubikCube():
     SideText.set("You are currently on side: " + side)
     Rubik_Info.RubikSetup(canvas, all_sides[all_sides.index(side)+1])
     
-    
+
+# This adjusts the cube to the Front side when the button is clicked
 def FrontRubikCube():
     print("I am in the front  section")
     global SideText, side, all_sides
@@ -54,7 +61,8 @@ def FrontRubikCube():
     SideText.set("You are currently on side: " + side)
     Rubik_Info.RubikSetup(canvas, all_sides[all_sides.index(side)+1])
     
-    
+
+# This adjusts the cube to the Bottom side when the button is clicked
 def BottomRubikCube():
     print("I am in the bottom of the rubik cube")
     global SideText, side, all_sides
@@ -62,7 +70,8 @@ def BottomRubikCube():
     SideText.set("You are currently on side: " + side)
     Rubik_Info.RubikSetup(canvas, all_sides[all_sides.index(side)+1])
     
-    
+
+# This adjusts the cube to the Left side when the button is clicked
 def LeftRubikCube():
     print("I am in the left of the left cube")
     global SideText, side, all_sides
@@ -70,7 +79,8 @@ def LeftRubikCube():
     SideText.set("You are currently on side: " + side)
     Rubik_Info.RubikSetup(canvas, all_sides[all_sides.index(side)+1])
     
-    
+
+# This adjusts the cube to the Right side when the button is clicked
 def RightRubikCube():
     print("I am in the right of the rubik cube")
     global SideText, side, all_sides
@@ -78,7 +88,11 @@ def RightRubikCube():
     SideText.set("You are currently on side: " + side)
     Rubik_Info.RubikSetup(canvas, all_sides[all_sides.index(side)+1])
     
-    
+
+# This checks for errors before solving the rubik cube
+# (too little of a color or too many of a color).
+# If error occurs, it exits the function and tells the user to fix it.
+# If there are no errors, it will call the Solving_algorithm function
 def Solve():
     global SideText, side, all_sides, ErrorText
     ErrorText.set("")
@@ -86,24 +100,23 @@ def Solve():
     colors = ["Red", 0, "White", 0, "Yellow", 0, "Green", 0, "Blue", 0, "Orange", 0, "dark gray", 0]  
 
     # Checks to see if there are any gray spots, or if there are more than 9 of a single color
-    for i in xrange(1, len(all_sides),2):
-        # 7 Colors to look for
+    for i in xrange(1, len(all_sides), 2):
         print("I am in side " + str(all_sides[i-1]))
-        time.sleep(5)
-        for j in xrange(1, len(colors),2):
+        # time.sleep(5)
+        
+        # 7 Colors to look for
+        for j in xrange(1, len(colors), 2):
             # print("j is " + str(j))
             print("I am looking for color " + str(colors[j-1]))
             # print("Showing side \"" + str(all_sides[i-1]) + "\" colors\n" + str(all_sides[i]))
             # time.sleep(5)
-            
-            # indexing = all_sides[i][all_sides[i].index(colors[j-1], indexing)]
             indices = [q for q, x in enumerate(all_sides[i]) if x == colors[j-1]]
             print("There are " + str(len(indices)) + " of the color " + str(colors[j-1]))
             # time.sleep(4)
             colors[j] += len(indices)
             print("There is a total of " + str(colors[j]) + " of  color " + colors[j-1])
             if (colors[j] > 9):
-                ErrorText.set("Error, there is too many " + colors[j-1] + "\'s on this cube, there is a max of 9 of any color")
+                ErrorText.set("ERROR! there is too many " + colors[j-1] + "\'s on this cube, there is a max of 9 of any color")
                 return
             
             # print("There is " + str(colors[i]) + " of Color " + colors[j-1])
@@ -114,6 +127,8 @@ def Solve():
                 side = all_sides[i-1]
                 SideText.set("You are currently on side: " + side)
                 return
+    Solving_algorithm.Solve_Cube(canvas, all_sides)
+    
 root = Tk()
 
 menu = Menu(root, tearoff= 0)
@@ -127,11 +142,6 @@ menu.add_command(label="Orange", command=lambda: hello("Orange"))
 Clicked = False
 coordinates = [0,0]
 all_sides = Rubik_Info.CreateCube()
-
-
-
-
-
 
 Xmove = (root.winfo_screenwidth()*(1-0.3))/2  # 390, 120
 Ymove = (root.winfo_screenheight()*(1-0.2))/2

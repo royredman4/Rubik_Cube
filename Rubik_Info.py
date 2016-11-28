@@ -6,17 +6,17 @@ except ImportError:
     from tkinter import *
 import time
 
-
+# Converts a set of coordinates into indexes in the cube
+# returns square index horizontally and vertically (x,y)
 def CoordinatesToIndex(coordinates):
     t = (coordinates[0] - 98) / 60
-    # t = 98 + (60 * multiple)
     
     i = (coordinates[1] - 90) / 60
-    # i = 90 + (60 * multiple)
     
     return[t, i]
 
 
+# Creates the cubes defaults at startup
 def CreateCube():
     side1 = ["dark gray", "dark gray", "dark gray",
              "dark gray", "dark gray", "dark gray",
@@ -43,10 +43,12 @@ def CreateCube():
                  "dark gray", "dark gray", "dark gray"]
 
     master = ["Front",frontside, "Back",side1, "Left",side2, "Right",side3, "Top",side4, "Bottom",side5]
-    # master = [frontside, side, side, side, side, side]
     return master
 
 
+# Creates the GUI portion of the cube
+# (creates all the colors on the screen
+# for a cubes side).
 def RubikSetup(canvas, colors):
     i = 90
     counter = 0
@@ -61,6 +63,7 @@ def RubikSetup(canvas, colors):
         i += 60
 
 
+# Changes a single cubes color to the users requested color on the screen
 def ChangeColor(canvas, color, index):
     multiple = (index[0] - 98) / 60
     t = 98 + (60 * multiple)
@@ -70,10 +73,11 @@ def ChangeColor(canvas, color, index):
     canvas.create_rectangle(t, i, t+60, i+60, fill=color)
     
     
+# Changes the color of an array from its original color to its new color
 def Update_Array(Master, side, color, coordinates):
     index = CoordinatesToIndex(coordinates)
     # print(str(Master.index(side)+1))
     print(str(index))
     # time.sleep(10)
-    Master[index[0] +(index[1]* 3)] = color
+    Master[index[0] + (index[1] * 3)] = color
     
