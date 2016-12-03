@@ -6,6 +6,7 @@ except ImportError:
     from tkinter import *
 import time
 
+
 # Converts a set of coordinates into indexes in the cube
 # returns square index horizontally and vertically (x,y)
 def CoordinatesToIndex(coordinates):
@@ -16,8 +17,10 @@ def CoordinatesToIndex(coordinates):
     return[t, i]
 
 
+
 # Creates the cubes defaults at startup
 def CreateCube():
+    '''
     side1 = ["dark gray", "dark gray", "dark gray",
              "dark gray", "dark gray", "dark gray",
              "dark gray", "dark gray", "dark gray"]
@@ -41,6 +44,60 @@ def CreateCube():
     frontside = ["dark gray", "dark gray", "dark gray",
                  "dark gray", "White", "dark gray",
                  "dark gray", "dark gray", "dark gray"]
+    '''
+
+    # If you want the pieces filled in (for testing purposes),
+    # Uncomment this section and comment out the previous section
+    '''
+    side1 = ["Yellow", "Yellow", "Yellow",
+             "Yellow", "Yellow", "Yellow",
+             "Yellow", "Yellow", "Yellow"]
+
+    side2 = ["Blue", "Blue", "Blue",
+             "Blue", "Blue", "Blue",
+             "Blue", "Blue", "Blue"]
+
+    side3 = ["Green", "Green", "Green",
+             "Green", "Green", "Green",
+             "Green", "Green", "Green"]
+
+    side4 = ["Red", "Red", "Red",
+             "Red", "Red", "Red",
+             "Red", "Red", "Red"]
+
+    side5 = ["Orange", "Orange", "Orange",
+             "Orange", "Orange", "Orange",
+             "Orange", "Orange", "Orange"]
+
+    frontside = ["White", "White", "White",
+                 "White", "White", "White",
+                 "White", "White", "White"]
+    '''
+
+    side1 = ["Green", "Green", "Green",
+             "Yellow", "Yellow", "Yellow",
+             "Blue", "Blue", "Blue"]
+
+    side2 = ["White", "White", "White",
+             "Blue", "Blue", "Blue",
+             "Yellow", "Yellow", "Yellow"]
+
+    side3 = ["Yellow", "Yellow", "Yellow",
+             "Green", "Green", "Green",
+             "White", "White", "White"]
+
+    side4 = ["Red", "Red", "Red",
+             "Red", "Red", "Red",
+             "Red", "Red", "Red"]
+
+    side5 = ["Orange", "Orange", "Orange",
+             "Orange", "Orange", "Orange",
+             "Orange", "Orange", "Orange"]
+
+    frontside = ["Green", "Green", "Green",
+                 "White", "White", "White",
+                 "Blue", "Blue", "Blue"]
+    
 
     master = ["Front",frontside, "Back",side1, "Left",side2, "Right",side3, "Top",side4, "Bottom",side5]
     return master

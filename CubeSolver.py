@@ -129,6 +129,7 @@ def Solve():
                 return
     Solving_algorithm.Solve_Cube(canvas, all_sides)
     
+    
 root = Tk()
 
 menu = Menu(root, tearoff= 0)
