@@ -94,7 +94,7 @@ def RightRubikCube():
 # If error occurs, it exits the function and tells the user to fix it.
 # If there are no errors, it will call the Solving_algorithm function
 def Solve():
-    global SideText, side, all_sides, ErrorText
+    global SideText, side, all_sides, ErrorText, dummy_number
     ErrorText.set("")
     print("In the solve function")
     colors = ["Red", 0, "White", 0, "Yellow", 0, "Green", 0, "Blue", 0, "Orange", 0, "dark gray", 0]  
@@ -127,7 +127,10 @@ def Solve():
                 side = all_sides[i-1]
                 SideText.set("You are currently on side: " + side)
                 return
-    Solving_algorithm.Solve_Cube(canvas, all_sides)
+    if (dummy_number == 2):
+        dummy_number = 0
+    Solving_algorithm.Solve_Cube(canvas, all_sides, dummy_number)
+    dummy_number += 1
     
     
 root = Tk()
@@ -143,6 +146,10 @@ menu.add_command(label="Orange", command=lambda: hello("Orange"))
 Clicked = False
 coordinates = [0,0]
 all_sides = Rubik_Info.CreateCube()
+
+# Delete when not needed
+dummy_number = 0
+
 
 Xmove = (root.winfo_screenwidth()*(1-0.3))/2  # 390, 120
 Ymove = (root.winfo_screenheight()*(1-0.2))/2
