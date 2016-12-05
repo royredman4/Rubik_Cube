@@ -74,6 +74,8 @@ def CreateCube():
                  "White", "White", "White"]
     '''
 
+    # For debugging turning up/down
+    '''
     side1 = ["Green", "Green", "Green",
              "Yellow", "Yellow", "Yellow",
              "Blue", "Blue", "Blue"]
@@ -97,8 +99,36 @@ def CreateCube():
     frontside = ["Green", "Green", "Green",
                  "White", "White", "White",
                  "Blue", "Blue", "Blue"]
-    
+    '''
 
+    # For debugging turning left/right
+    '''
+    '''
+    side1 = ["White", "Yellow", "Blue",
+             "White", "Yellow", "Blue",
+             "White", "Yellow", "Blue"]
+
+    side2 = ["Orange", "Orange", "Orange",
+             "Orange", "Orange", "Orange",
+             "Orange", "Orange", "Orange"]
+
+    side3 = ["Red", "Red", "Red",
+             "Red", "Red", "Red",
+             "Red", "Red", "Red"]
+
+    side4 = ["Green", "Blue", "White",
+             "Green", "Blue", "White",
+             "Green", "Blue", "White"]
+
+    side5 = ["Blue", "Green", "Yellow",
+             "Blue", "Green", "Yellow",
+             "Blue", "Green", "Yellow"]
+
+    frontside = ["Yellow", "White", "Green",
+                 "Yellow", "White", "Green",
+                 "Yellow", "White", "Green"]
+    
+    
     master = ["Front",frontside, "Back",side1, "Left",side2, "Right",side3, "Top",side4, "Bottom",side5]
     return master
 
