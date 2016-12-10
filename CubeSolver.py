@@ -179,6 +179,7 @@ def NextMove(canvas):
             
         BackMessage.set("Go " + temp[1] + " " + str(temp[3]) + " time(s) at row/col " + str(temp[2]))
         Rubik_Info.Before_After(canvas, all_sides, all_sides[all_sides.index("Front")+1], temp)
+        FrontRubikCube()
     else:
         BackMessage.set("No more moves to go.\nClose this to edit the cube")
     
