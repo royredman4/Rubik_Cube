@@ -1,6 +1,7 @@
 import time
 import Rubik_Info
 import collections
+import random
 
 try:
     # for Python 2
@@ -14,9 +15,17 @@ def Solve_Cube(canvas, all_Sides, number, ErrorText):
     print("\n\n\nI am in the solving portion, good luck!")
     side = "Front"
     side_index = all_Sides.index(side) + 1
-    direction = "Right"
-    row_col = 2
+    direction = "Left"
+    row_col = 0
     move_amount = 1
+
+    # Delete this if you dont want the rendomizing going on
+    temp_directions = ["Up", "Down", "Left", "Right"]
+    row_col = random.randint(0, 2)
+    direction = temp_directions[random.randint(0, 3)]
+    print("row_col is " + str(row_col) + " and direction is " + str(direction))
+
+
     
     if (number == 0):
         # Rubik_Info.RubikSetup(canvas, all_Sides[side_index])
@@ -28,8 +37,8 @@ def Solve_Cube(canvas, all_Sides, number, ErrorText):
     if (number == 1):
         side = "Front"
         side_index = all_Sides.index(side) + 1
-        direction = "Down"
-        row_col = 0
+        #direction = "Up"
+        #row_col = 0
         move_amount = 1
         # Rubik_Info.RubikSetup(canvas, all_Sides[side_index])
         Rotate_Cube(all_Sides,side, all_Sides[side_index], row_col, direction, move_amount)
