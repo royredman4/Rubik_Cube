@@ -1,6 +1,7 @@
 import time
 import Rubik_Info
 import Solving_algorithm
+import collections
 
 try:
     # for Python 2
@@ -94,7 +95,7 @@ def RightRubikCube():
 # If error occurs, it exits the function and tells the user to fix it.
 # If there are no errors, it will call the Solving_algorithm function
 def Solve():
-    global SideText, side, all_sides, ErrorText, dummy_number
+    global SideText, side, all_sides, ErrorText, dummy_number,moves
     ErrorText.set("")
     print("In the solve function")
     colors = ["Red", 0, "White", 0, "Yellow", 0, "Green", 0, "Blue", 0, "Orange", 0, "dark gray", 0]  
@@ -129,9 +130,57 @@ def Solve():
                 return
     if (dummy_number == 2):
         dummy_number = 0
-    Solving_algorithm.Solve_Cube(canvas, all_sides, dummy_number)
+    moves.append((Solving_algorithm.Solve_Cube(canvas, all_sides, dummy_number, ErrorText)))
+    FrontRubikCube()
+    
+    print(str(moves))
+    # time.sleep(17)
     dummy_number += 1
     
+
+def GoToBeginning():
+    global moves, Xmove, Ymove, BackMessage, temp
+    print("HEllo")
+    GoBack = Toplevel() #### NEED TO CHANGE THIS TO A CANVAS!!!
+    canvas = Canvas(GoBack, width=480, height=380)
+    
+    
+    NextMove(canvas)
+    GoBack.geometry("%dx%d%+d%+d" % (480, 480, Xmove, Ymove-100))
+    SideFormatter = Label(GoBack, textvariable=BackMessage).pack(side=TOP)
+    C5 = Button(GoBack, text="NextMove", command=lambda: NextMove(canvas)).pack(side=BOTTOM)
+    
+    canvas.pack(side=LEFT)
+    GoBack.mainloop()
+    GoBack.destroy()
+
+
+def NextMove(canvas):
+    global moves, BackMessage, temp, all_sides
+    
+    if(len(moves) > 0):
+        temp = moves.pop()
+        print(str(temp))
+        print("Moves are now " + str(moves))
+        VerticalFlip = ["Up", "Down"]
+        HorizontalFlip = ["Left", "Right"]
+        if ((temp[1] == "Up") or (temp[1] == "Down")):
+            print("Im in Up/Down Section")
+            # print(str(int(not(VerticalFlip.index(temp[1])))))
+            # time.sleep(3)
+            val = int(not(VerticalFlip.index(temp[1])))
+            print("val is " + str(val))
+            temp[1] = VerticalFlip[val]
+        else:
+            val = int(not(HorizontalFlip.index(temp[1])))
+            print("left/right val is " + str(val))
+            temp[1] = HorizontalFlip[val]
+            print("New temp is " +str(temp))
+            
+        BackMessage.set("Go " + temp[1] + " " + str(temp[3]) + " time(s) at row/col " + str(temp[2]))
+        Rubik_Info.Before_After(canvas, all_sides, all_sides[all_sides.index("Front")+1], temp)
+    else:
+        BackMessage.set("No more moves to go.\nClose this to edit the cube")
     
 root = Tk()
 
@@ -145,6 +194,9 @@ menu.add_command(label="Orange", command=lambda: hello("Orange"))
 
 Clicked = False
 coordinates = [0,0]
+moves = collections.deque()
+BackMessage = StringVar()
+temp = ""
 all_sides = Rubik_Info.CreateCube()
 
 # Delete when not needed
@@ -166,8 +218,9 @@ BottomButton = Button(root, text = "Bottom", command=BottomRubikCube)
 LeftButton = Button(root, text = "Left", command=LeftRubikCube)
 RightButton = Button(root, text = "Right", command=RightRubikCube)
 SolveButton = Button(root, text = "Solve", command=Solve)
+GoToBeginning = Button(root, text = "Go Back to Start", command =GoToBeginning)
 
-side = "Top"
+side = "Front"
 SideText = StringVar()
 SideText.set("You are currently on side: " + side)
 outputs = Canvas(root, width = 30, height = 20)
@@ -192,6 +245,7 @@ LeftButton.pack(side=LEFT)
 RightButton.pack(side=RIGHT)
 SolveButton.pack()
 SolveButton.place(bordermode=INSIDE, height = 100, width = 100, x = 370, y = 370)
+GoToBeginning.pack(side=BOTTOM)
 
 canvas.pack(side=LEFT)
 root.mainloop()
