@@ -1,5 +1,6 @@
 import time
 import Rubik_Info
+import collections
 
 try:
     # for Python 2
@@ -9,29 +10,33 @@ except ImportError:
     from tkinter import *
 
 # The begining function of solving the rubik cube
-def Solve_Cube(canvas, all_Sides, number):
+def Solve_Cube(canvas, all_Sides, number, ErrorText):
     print("\n\n\nI am in the solving portion, good luck!")
-
     side = "Front"
     side_index = all_Sides.index(side) + 1
-    direction = "Left"
+    direction = "Right"
     row_col = 2
     move_amount = 1
-
+    
     if (number == 0):
-        Rubik_Info.RubikSetup(canvas, all_Sides[side_index])
+        # Rubik_Info.RubikSetup(canvas, all_Sides[side_index])
         Rotate_Cube(all_Sides,side, all_Sides[side_index], row_col, direction, move_amount)
-
+   
+    # Rubik_Info.RubikSetup(canvas, all_Sides[side_index])
+    # Rotate_Cube(all_Sides,side, all_Sides[side_index], row_col, direction, move_amount)
+    
     if (number == 1):
         side = "Front"
         side_index = all_Sides.index(side) + 1
         direction = "Down"
         row_col = 0
         move_amount = 1
-        Rubik_Info.RubikSetup(canvas, all_Sides[side_index])
+        # Rubik_Info.RubikSetup(canvas, all_Sides[side_index])
         Rotate_Cube(all_Sides,side, all_Sides[side_index], row_col, direction, move_amount)
+        
+    ErrorText.set("Moving " + direction + " at row/col " + str(row_col))
+    return ([side, direction, row_col, move_amount])
     
-
 # Shifts a section of the cube in the direction desired
 def Rotate_Cube(all_sides, side_name, current_side, row_column, direction, turns):
     print("Im shifting square " + str(row_column) + " in the " + direction + " direction" + " " + str(turns) + " times")
@@ -102,7 +107,23 @@ def Rotate_Cube(all_sides, side_name, current_side, row_column, direction, turns
     else:
         print("Going Right")
         # Start here (everything before has already been tested)
-        
+        sides = ["Front", "Right", "Back", "Left"]
+        if (row_column == 0):
+            indexes = [0, 1, 2]
+            places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+            Back_indexes = [8, 7, 6]
+            affected_side = "Top"
+            
+        elif (row_column == 1):
+            indexes = [3, 4, 5]
+            Back_indexes = [5, 4, 3]
+            
+        else:
+            indexes = [6, 7, 8]
+            places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+            Back_indexes = [2, 1, 0]
+            affected_side = "Bottom"
+            
     for n in range(turns):
         current_color[:] = []
         replacement_color[:] = []
@@ -173,3 +194,5 @@ def Rotate_Cube(all_sides, side_name, current_side, row_column, direction, turns
             temp[:] = []
                   
     print("You need to update the whole cube now!!")
+
+    
