@@ -172,7 +172,58 @@ def Update_Array(Master, side, color, coordinates):
 
 def Before_After(canvas, all_sides, colors, temp):
     
+    canvas.delete("line")
+    if (temp[1] == "Down"):
+        x1 = 65
+        y1 = 80
+        x2 = 65
+        y2 = 40
+        if temp[2] == 1:
+            x1 += 50
+            x2 = x1
+        elif temp[2] == 2:
+            x1 += 100
+            x2 = x1
+    elif (temp[1] == "Up"):
+        x1 = 65
+        y1 = 260
+        x2 = 65
+        y2 = 290
+        
+        if (temp[2] == 1):
+            x1 += 50
+            x2 = x1
+        elif (temp[2] == 2):
+            x1 += 100
+            x2 = x1
+    elif (temp[1] == "Left"):
+        x1 = 200
+        y1 = 115
+        x2 = 230
+        y2 = 115
+        if (temp[2] == 1):
+            y1 += 50
+            y2 = y1
+        elif (temp[2] == 2):
+            y1 += 100
+            y2 = y1
+    elif (temp[1] == "Right"):
+        x1 = 35
+        y1 = 115
+        x2 = 5
+        y2 = 115
+        if (temp[2] == 1):
+            y1 += 50
+            y2 = y1
+        elif (temp[2] == 2):
+            y1 += 100
+            y2 = y1
+
+    # Where you start the end of x, where you start the end of y (arrow spot)
+    # The lines x axis at the end, the y axis at the end (begin line spot)
+    w = canvas.create_line(x1, y1, x2, y2, arrow=FIRST, tag = "line") 
     
+        
     print(colors)
     # time.sleep(10)
     for r in range(0, 2):
