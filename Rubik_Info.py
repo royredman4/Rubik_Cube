@@ -5,6 +5,7 @@ except ImportError:
     # for Python 3
     from tkinter import *
 import time
+import Solving_algorithm
 
 
 # Converts a set of coordinates into indexes in the cube
@@ -168,3 +169,26 @@ def Update_Array(Master, side, color, coordinates):
     # time.sleep(10)
     Master[index[0] + (index[1] * 3)] = color
     
+
+def Before_After(canvas, all_sides, colors, temp):
+    
+    
+    print(colors)
+    # time.sleep(10)
+    for r in range(0, 2):
+        i = 90
+        counter = 0
+        if r ==1:
+            print("This spot needs to change the rubiks cube to the \"after\" section")
+            Solving_algorithm.Rotate_Cube(all_sides, temp[0], all_sides[all_sides.index("Front")+1], temp[2], temp[1], temp[3])
+        for z in range(0, 3):
+            if r == 1:
+                t = 260 #98
+            else:
+                t = 40
+            for q in range(0, 3):
+                canvas.create_rectangle(t, i, t+50, i+50, fill=colors[counter])
+                t += 50
+                counter += 1
+            #i += 60
+            i += 50
