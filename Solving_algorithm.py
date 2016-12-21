@@ -3,6 +3,7 @@ import Rubik_Info
 import collections
 import random
 
+
 try:
     # for Python 2
     from Tkinter import *
@@ -13,17 +14,18 @@ except ImportError:
 # The begining function of solving the rubik cube
 def Solve_Cube(canvas, all_Sides, number, ErrorText):
     print("\n\n\nI am in the solving portion, good luck!")
-    side = "Front"
+    #side = "Front"
+    side = "Top"
     side_index = all_Sides.index(side) + 1
-    direction = "Left"
-    row_col = 0
+    direction = "Right"
+    row_col = 2
     move_amount = 1
 
     # Delete this if you dont want the rendomizing going on
-    temp_directions = ["Up", "Down", "Left", "Right"]
-    row_col = random.randint(0, 2)
-    direction = temp_directions[random.randint(0, 3)]
-    print("row_col is " + str(row_col) + " and direction is " + str(direction))
+    #temp_directions = ["Up", "Down", "Left", "Right"]
+    #row_col = random.randint(0, 2)
+    #direction = temp_directions[random.randint(0, 3)]
+    #print("row_col is " + str(row_col) + " and direction is " + str(direction))
 
 
     
@@ -35,153 +37,442 @@ def Solve_Cube(canvas, all_Sides, number, ErrorText):
     # Rotate_Cube(all_Sides,side, all_Sides[side_index], row_col, direction, move_amount)
     
     if (number == 1):
+        # Finish up by doing the  bottom side
+        #side = "Front"
         side = "Front"
         side_index = all_Sides.index(side) + 1
-        #direction = "Up"
-        #row_col = 0
+        direction = "Left"
+        row_col = 0
         move_amount = 1
         # Rubik_Info.RubikSetup(canvas, all_Sides[side_index])
         Rotate_Cube(all_Sides,side, all_Sides[side_index], row_col, direction, move_amount)
         
-    ErrorText.set("Moving " + direction + " at row/col " + str(row_col))
+    ErrorText.set("Moving " + direction + " at row/col " + str(row_col) + " at " + side + " side")
     return ([side, direction, row_col, move_amount])
     
 # Shifts a section of the cube in the direction desired
 def Rotate_Cube(all_sides, side_name, current_side, row_column, direction, turns):
     print("Im shifting square " + str(row_column) + " in the " + direction + " direction" + " " + str(turns) + " times")
     current_color = []
-    replacement_color = []
+    temp_color = []
+    next_color = []
     sides = []
     indexes = []
     places = []
-    Back_indexes = []
     affected_side = ""
     
     if direction == "Up":
         print("Going UP!")
         if (side_name == "Front"):
             sides = ["Front", "Top", "Back", "Bottom"]
-            if (row_column == 1):
-                indexes = [1, 4, 7]
-                
-            elif (row_column == 0):
+            if (row_column == 0):
                 print("Hello")
-                indexes = [0, 3, 6]
+                indexes = [[0, 3, 6],
+                           [0, 3, 6],
+                           [8, 5, 2],
+                           [0, 3, 6]]
                 places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
                 affected_side = "Left"
+            elif (row_column == 1):
+                indexes = [[1, 4, 7],
+                           [1, 4, 7],
+                           [7, 4, 1],
+                           [1, 4, 7]]
+                
             else:
                 print("Hi")
-                indexes = [2, 5, 8]
+                indexes = [[2, 5, 8],
+                           [2, 5, 8],
+                           [6, 3, 0],
+                           [2, 5, 8]]
                 places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
                 affected_side = "Right"
-            
+                
+        elif (side_name == "Back"):
+            sides = ["Back", "Top", "Front", "Bottom"]
+            if (row_column == 0):
+                print("Hello")
+                indexes = [[0, 3, 6],
+                           [8, 5, 2],
+                           [8, 5, 2],
+                           [8, 5, 2]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Right"
+            elif (row_column == 1):
+                indexes = [[1, 4, 7],
+                           [7, 4, 1],
+                           [7, 4, 1],
+                           [7, 4, 1]]
+            else:
+                indexes = [[2, 5, 8],
+                           [6, 3, 0],
+                           [6, 3, 0],
+                           [6, 3, 0]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Left"
+                
+        elif (side_name == "Left"):
+            sides = ["Left", "Top", "Right", "Bottom"]
+            if (row_column == 0):
+                indexes = [[0, 3, 6],
+                           [2, 1, 0],
+                           [8, 5, 2],
+                           [6, 7, 8]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Back"
+            elif (row_column == 1):
+                indexes = [[1, 4, 7],
+                           [5, 4, 3],
+                           [7, 4, 1],
+                           [3, 4, 5]]
+            else:
+                indexes = [[2, 5, 8],
+                           [8, 7, 6],
+                           [6, 3, 0],
+                           [0, 1, 2]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Front"
+        elif (side_name == "Right"):
+            sides = ["Right", "Top", "Left", "Bottom"]
+            if (row_column == 0):
+                indexes = [[0, 3, 6],
+                           [6, 7, 8],
+                           [8, 5, 2],
+                           [2, 1, 0]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Front"
+            elif (row_column == 1):
+                indexes = [[1, 4, 7],
+                           [3, 4, 5],
+                           [7, 4, 1],
+                           [5, 4, 3]]
+            else:
+                indexes = [[2, 5, 8],
+                           [0, 1, 2],
+                           [6, 3, 0],
+                           [8, 7, 6]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Back"
+        elif (side_name == "Top"):
+            sides = ["Top", "Back", "Bottom", "Front"]
+            if (row_column == 0):
+                indexes = [[0, 3, 6],
+                           [8, 5, 2],
+                           [0, 3, 6],
+                           [0, 3, 6]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Left"
+            elif(row_column == 1):
+                indexes = [[1, 4, 7],
+                           [7, 4, 1],
+                           [1, 4, 7],
+                           [1, 4, 7]]
+            else:
+                indexes = [[2, 5, 8],
+                           [6, 3, 0],
+                           [2, 5, 8],
+                           [2, 5, 8]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Right"
+        
     elif direction == "Down":
         print("Going Down!")
         if (side_name == "Front"):
             sides = ["Front", "Bottom", "Back", "Top"]
             if (row_column == 0):
-                indexes = [0, 3, 6]
+                indexes = [[0, 3, 6],
+                           [0, 3, 6],
+                           [8, 5, 2],
+                           [0, 3, 6]]
                 places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
                 affected_side = "Left"
                 
             elif (row_column == 1):
-                indexes = [1, 4, 7]
-                
+                indexes = [[1, 4, 7],
+                           [1, 4, 7],
+                           [7, 4, 1],
+                           [1, 4, 7]]
             else:
-                indexes = [2, 5, 8]
+                indexes = [[2, 5, 8],
+                           [2, 5, 8],
+                           [6, 3, 0],
+                           [2, 5, 8]]
                 places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
                 affected_side = "Right"
-            
+        elif (side_name == "Back"):
+            sides = ["Back", "Bottom", "Front", "Top"]
+            if (row_column == 0):
+                indexes = [[0, 3, 6],
+                           [8, 5, 2],
+                           [8, 5, 2],
+                           [8, 5, 2]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Right"
+            elif (row_column == 1):
+                indexes = [[1, 4, 7],
+                           [7, 4, 1],
+                           [7, 4, 1],
+                           [7, 4, 1]]
+            else:
+                indexes = [[2, 5, 8],
+                           [6, 3, 0],
+                           [6, 3, 0],
+                           [6, 3, 0]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Left"
+        elif (side_name == "Left"):
+            sides = ["Left", "Bottom", "Right", "Top"]
+            if (row_column == 0):
+                indexes = [[0, 3, 6],
+                           [6, 7, 8],
+                           [8, 5, 2],
+                           [2, 1, 0]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Back"
+            elif (row_column == 1):
+                indexes = [[1, 4, 7],
+                           [3, 4, 5],
+                           [7, 4, 1],
+                           [5, 4, 3]]
+            else:
+                indexes = [[2, 5, 8],
+                           [0, 1, 2],
+                           [6, 3, 0],
+                           [8, 7, 6]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Front"
+        elif (side_name == "Right"):
+            sides = ["Right", "Bottom", "Left", "Top"]
+            if (row_column == 0):
+                indexes = [[0, 3, 6],
+                           [2, 1, 0],
+                           [8, 5, 2],
+                           [6, 7, 8]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Front"
+            elif (row_column == 1):
+                indexes = [[1, 4, 7],
+                           [5, 4, 3],
+                           [7, 4, 1],
+                           [3, 4, 5]]
+            else:
+                indexes = [[2, 5, 8],
+                           [8, 7, 6],
+                           [6, 3, 0],
+                           [0, 1, 2]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Back"
+        elif (side_name == "Top"):
+            sides = ["Top", "Front", "Bottom", "Back"]
+            if (row_column == 0):
+                indexes = [[0, 3, 6],
+                           [0, 3, 6],
+                           [0, 3, 6],
+                           [8, 5, 2]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Left"
+            elif (row_column == 1):
+                indexes = [[1, 4, 7],
+                           [1, 4, 7],
+                           [1, 4, 7],
+                           [7, 4, 1]]
+            else:
+                indexes = [[2, 5, 8],
+                           [2, 5, 8],
+                           [2, 5, 8],
+                           [6, 3, 0]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Right"
+                
     elif direction == "Left":
         print("Going Left")
         if (side_name == "Front"):
             sides = ["Front", "Left", "Back", "Right"]
             if (row_column == 0):
-                indexes = [0, 1, 2]
+                indexes = [[0, 1, 2]]
                 places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
-                Back_indexes = [8, 7, 6]
                 affected_side = "Top"
             elif(row_column == 1):
-                print("Hello")
-                indexes = [3, 4, 5]
-                Back_indexes = [5, 4, 3]
-                
+                indexes = [[3, 4, 5]]
             else:
-                print("Bottom affected")
-                indexes = [6, 7, 8]
+                indexes = [[6, 7, 8]]
                 places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
-                Back_indexes = [2, 1, 0]
+                affected_side = "Bottom"
+        elif (side_name == "Back"):
+            sides = ["Back", "Right", "Front", "Left"]
+            if (row_column == 0):
+                indexes = [[0, 1, 2]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Top"
+            elif (row_column == 1):
+                indexes = [[3, 4, 5]]
+            else:
+                indexes = [[6, 7, 8]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Bottom"
+        elif (side_name == "Left"):
+            sides = ["Left", "Back", "Right", "Front"]
+            if (row_column == 0):
+                indexes = [[0, 1, 2]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Top"
+            elif (row_column == 1):
+                indexes = [[3, 4, 5]]
+            else:
+                indexes = [[6, 7, 8]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Bottom"
+        elif (side_name == "Right"):
+            sides = ["Right", "Front", "Left", "Back"]
+            if (row_column == 0):
+                indexes = [[0, 1, 2]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Top"
+            elif (row_column == 1):
+                indexes = [[3, 4, 5]]
+            else:
+                indexes = [[6, 7, 8]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
                 affected_side = "Bottom"
                 
-    else:
+        elif (side_name == "Top"):
+            sides = ["Top", "Left", "Bottom", "Right"]
+            if (row_column == 0):
+                indexes = [[0, 1, 2],
+                           [6, 3, 0],
+                           [8, 7, 6],
+                           [2, 5, 8]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Back"
+            elif (row_column == 1):
+                indexes = [[3, 4, 5],
+                           [7, 4, 1],
+                           [5, 4, 3],
+                           [1, 4, 7]]
+            else:
+                indexes = [[6, 7, 8],
+                           [8, 5, 2],
+                           [2, 1, 0],
+                           [0, 3, 6]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Front"
+        
+    elif direction == "Right":
         print("Going Right")
-        # Start here (everything before has already been tested)
-        sides = ["Front", "Right", "Back", "Left"]
-        if (row_column == 0):
-            indexes = [0, 1, 2]
-            places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
-            Back_indexes = [8, 7, 6]
-            affected_side = "Top"
-            
-        elif (row_column == 1):
-            indexes = [3, 4, 5]
-            Back_indexes = [5, 4, 3]
-            
-        else:
-            indexes = [6, 7, 8]
-            places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
-            Back_indexes = [2, 1, 0]
-            affected_side = "Bottom"
-            
+        if (side_name == "Front"):
+            sides = ["Front", "Right", "Back", "Left"]
+            if (row_column == 0):
+                indexes = [[0, 1, 2]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Top"
+            elif (row_column == 1):
+                indexes = [[3, 4, 5]]
+            else:
+                indexes = [[6, 7, 8]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Bottom"
+        elif (side_name == "Back"):
+            sides = ["Back", "Left", "Front", "Right"]
+            if (row_column == 0):
+                indexes = [[0, 1, 2]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Top"
+            elif (row_column == 1):
+                indexes = [[3, 4, 5]]
+            else:
+                indexes = [[6, 7, 8]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Bottom"
+        elif (side_name == "Left"):
+            sides = ["Left", "Front", "Right", "Back"]
+            if (row_column == 0):
+                indexes = [[0, 1, 2]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Top"
+            elif (row_column == 1):
+                indexes = [[3, 4, 5]]
+            else:
+                indexes = [[6, 7, 8]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Bottom"
+
+        elif (side_name == "Right"):
+            sides = ["Right", "Back", "Left", "Front"]
+            if (row_column == 0):
+                indexes = [[0, 1, 2]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Top"
+            elif (row_column == 1):
+                indexes = [[3, 4, 5]]
+            else:
+                indexes = [[6, 7, 8]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Bottom"
+        elif (side_name == "Top"):
+            sides = ["Top", "Right", "Bottom", "Left"]
+            if (row_column == 0):
+                indexes = [[0, 1, 2],
+                           [2, 5, 8],
+                           [8, 7, 6],
+                           [6, 3, 0]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Back"
+            elif (row_column == 1):
+                indexes = [[3, 4, 5],
+                           [1, 4, 7],
+                           [5, 4, 3],
+                           [7, 4, 1]]
+            else:
+                indexes = [[6, 7, 8],
+                           [0, 3, 6],
+                           [2, 1, 0],
+                           [8, 5, 2]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Front"
+        # ##
+    same_indexes = False
     for n in range(turns):
         current_color[:] = []
-        replacement_color[:] = []
         # print("Current Side is " + str(current_side))
         sleep_time = 0
         for i in range(len(sides)):
             current_side = all_sides.index(sides[i])+1
             if i == 3:
                 next_side = all_sides.index(sides[0])+1
+                r = 0
             else:
                 next_side = all_sides.index(sides[i+1]) + 1
-                        
+                
             if i == 0:
-                current_color.append((all_sides[current_side][indexes[0]], all_sides[current_side][indexes[1]], all_sides[current_side][indexes[2]]))
+                if (len(indexes) == 1):
+                    same_indexes = True
+                    q = 0
+                    r = 0
+                else:
+                    q = 0
+                    r = 1
+                current_color.append((all_sides[current_side][indexes[q][0]], all_sides[current_side][indexes[q][1]], all_sides[current_side][indexes[q][2]]))
+                 
+            if ((same_indexes is False) and (i != 0) and (i != 3)):
+                q = i
+                r = i + 1
+            
+            temp_color[:] = []
+            temp_color.append((all_sides[next_side][indexes[r][0]], all_sides[next_side][indexes[r][1]], all_sides[next_side][indexes[r][2]]))
             print("Current color is " + str(current_color))
-            print(str(indexes[0]) + " " + str(indexes[1]) + " " + str(indexes[2]))
+            print(str(indexes[q][0]) + " " + str(indexes[q][1]) + " " + str(indexes[q][2]))
             time.sleep(sleep_time)
             
-            # print("Replacement color is " + str(replacement_color))
-            # print(str(indexes[0]) + " " +str(indexes[1]) + " " + str(indexes[2]))
-            # print("Next side is " + sides[i+1])
-            # time.sleep(sleep_time)
-            
-            if ((direction == "Left" or direction == "Right") and (i != 3) and (sides[i+1] == "Back")):
-                replacement_color.append((all_sides[next_side][Back_indexes[0]], all_sides[next_side][Back_indexes[1]], all_sides[next_side][Back_indexes[2]]))
-                print("This should only be for the back side")
-                print("Current Color is " + str(current_color))
-                print(str(indexes[0]) + " " + str(indexes[1]) + " " + str(indexes[2]))
-                print("Replacement color is " + str(replacement_color))
-                print(str(indexes[0]) + " " +str(indexes[1]) + " " + str(indexes[2]))
-                time.sleep(sleep_time)
-                # current_color.reverse()
-                all_sides[next_side][Back_indexes[0]] = current_color[0][0]
-                all_sides[next_side][Back_indexes[1]] = current_color[0][1]
-                all_sides[next_side][Back_indexes[2]] = current_color[0][2]
-                current_color[:] = []
-                current_color.append((replacement_color[0][0], replacement_color[0][1], replacement_color[0][2]))
-            else:
-                replacement_color.append((all_sides[next_side][indexes[0]], all_sides[next_side][indexes[1]], all_sides[next_side][indexes[2]]))
-                all_sides[next_side][indexes[0]] = current_color[0][0] #all_sides[current_side][2]
-                all_sides[next_side][indexes[1]] = current_color[0][1] #all_sides[current_side][5]
-                all_sides[next_side][indexes[2]] = current_color[0][2] #all_sides[current_side][8]
-                current_color[:] = []
-                current_color.append((replacement_color[0][0], replacement_color[0][1], replacement_color[0][2]))
-            print("New current color is " + str(current_color))
+            # next_color.append((all_sides[next_side][indexes[r][0]], all_sides[next_side][indexes[r][1]], all_sides[next_side][indexes[r][2]])) 
+            print("Next color is " + str(all_sides[next_side][indexes[r][0]]) + " " + str(all_sides[next_side][indexes[r][1]]) + " " + str(all_sides[next_side][indexes[r][2]]))
+            print(str(indexes[r][0]) + " " + str(indexes[r][1]) + " " + str(indexes[r][2]))
             time.sleep(sleep_time)
-            replacement_color[:] = []
-            # print("Current color after clearing replacement_color is " + str(current_color))
-            # time.sleep(10)
+            all_sides[next_side][indexes[r][0]] = current_color[0][0]
+            all_sides[next_side][indexes[r][1]] = current_color[0][1]
+            all_sides[next_side][indexes[r][2]] = current_color[0][2]
+
+            current_color[:] = []
+            current_color.append((temp_color[0][0], temp_color[0][1], temp_color[0][2]))
             print("current side is " + str(all_sides[current_side]))
             print("next side " + str(all_sides[next_side]))
             time.sleep(sleep_time)
