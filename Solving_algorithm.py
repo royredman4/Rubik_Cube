@@ -15,7 +15,7 @@ except ImportError:
 def Solve_Cube(canvas, all_Sides, number, ErrorText):
     print("\n\n\nI am in the solving portion, good luck!")
     #side = "Front"
-    side = "Top"
+    side = "Bottom"
     side_index = all_Sides.index(side) + 1
     direction = "Right"
     row_col = 2
@@ -37,7 +37,6 @@ def Solve_Cube(canvas, all_Sides, number, ErrorText):
     # Rotate_Cube(all_Sides,side, all_Sides[side_index], row_col, direction, move_amount)
     
     if (number == 1):
-        # Finish up by doing the  bottom side
         #side = "Front"
         side = "Front"
         side_index = all_Sides.index(side) + 1
@@ -174,7 +173,31 @@ def Rotate_Cube(all_sides, side_name, current_side, row_column, direction, turns
                            [2, 5, 8]]
                 places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
                 affected_side = "Right"
-        
+        elif (side_name == "Bottom"):
+            sides = ["Bottom", "Front", "Top", "Back"]
+            if (row_column == 0):
+                indexes = [[0, 3, 6],
+                           [0, 3, 6],
+                           [0, 3, 6],
+                           [8, 5, 2]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Left"
+            elif (row_column == 1):
+                indexes = [[1, 4, 7],
+                           [1, 4, 7],
+                           [1, 4, 7],
+                           [7, 4, 1]]
+            else:
+                indexes = [[2, 5, 8],
+                           [2, 5, 8],
+                           [2, 5, 8],
+                           [6, 3, 0]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Right"
+        else:
+            print("This is an INVALID OPTION!!")
+            time.sleep(12)
+            
     elif direction == "Down":
         print("Going Down!")
         if (side_name == "Front"):
@@ -283,7 +306,31 @@ def Rotate_Cube(all_sides, side_name, current_side, row_column, direction, turns
                            [6, 3, 0]]
                 places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
                 affected_side = "Right"
-                
+        elif (side_name == "Bottom"):
+            sides = ["Bottom", "Back", "Top", "Front"]
+            if (row_column == 0):
+                indexes = [[0, 3, 6],
+                           [8, 5, 2],
+                           [0, 3, 6],
+                           [0, 3, 6]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Left"
+            elif (row_column == 1):
+                indexes = [[1, 4, 7],
+                           [7, 4, 1],
+                           [1, 4, 7],
+                           [1, 4, 7]]
+            else:
+                indexes = [[2, 5, 8],
+                           [6, 3, 0],
+                           [2, 5, 8],
+                           [2, 5, 8]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Right"
+        else:
+            print("This is an INVALID OPTION!!")
+            time.sleep(12)
+        
     elif direction == "Left":
         print("Going Left")
         if (side_name == "Front"):
@@ -356,7 +403,31 @@ def Rotate_Cube(all_sides, side_name, current_side, row_column, direction, turns
                            [0, 3, 6]]
                 places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
                 affected_side = "Front"
-        
+        elif (side_name == "Bottom"):
+            sides = ["Bottom", "Left", "Top", "Right"]
+            if (row_column == 0):
+                indexes = [[0, 1, 2],
+                           [2, 5, 8],
+                           [8, 7, 6],
+                           [6, 3, 0]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Front"
+            elif (row_column == 1):
+                indexes = [[3, 4, 5],
+                           [1, 4, 7],
+                           [5, 4, 3],
+                           [7, 4, 1]]
+            else:
+                indexes = [[6, 7, 8],
+                           [0, 3, 6],
+                           [2, 1, 0],
+                           [8, 5, 2]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Back"
+        else:
+            print("This is an INVALID OPTION!!")
+            time.sleep(12)
+            
     elif direction == "Right":
         print("Going Right")
         if (side_name == "Front"):
@@ -429,7 +500,31 @@ def Rotate_Cube(all_sides, side_name, current_side, row_column, direction, turns
                            [8, 5, 2]]
                 places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
                 affected_side = "Front"
-        # ##
+        elif (side_name == "Bottom"):
+            sides = ["Bottom", "Right", "Top", "Left"]
+            if (row_column == 0):
+                indexes = [[0, 1, 2],
+                           [6, 3, 0],
+                           [8, 7, 6],
+                           [2, 5, 8]]
+                places = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+                affected_side = "Front"
+            elif (row_column == 1):
+                indexes = [[3, 4, 5],
+                           [7, 4, 1],
+                           [5, 4, 3],
+                           [1, 4, 7]]
+            else:
+                indexes = [[6, 7, 8],
+                           [8, 5, 2],
+                           [2, 1, 0],
+                           [0, 3, 6]]
+                places = [2, 5, 8, 1, 4, 7, 0, 3, 6]
+                affected_side = "Back"
+        else:
+            print("This is an INVALID OPTION!!")
+            time.sleep(12)
+    
     same_indexes = False
     for n in range(turns):
         current_color[:] = []
