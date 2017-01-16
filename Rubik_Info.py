@@ -104,10 +104,10 @@ def CreateCube():
 
     # For debugging turning left/right
     '''
-    '''
-    side1 = ["White", "Yellow", "Blue",
-             "White", "Yellow", "Blue",
-             "White", "Yellow", "Blue"]
+    
+    side1 = ["Blue", "Yellow", "White",
+             "Blue", "Yellow", "White",
+             "Blue", "Yellow", "White"]
 
     side2 = ["Orange", "Orange", "Orange",
              "Orange", "Orange", "Orange",
@@ -128,7 +128,32 @@ def CreateCube():
     frontside = ["Yellow", "White", "Green",
                  "Yellow", "White", "Green",
                  "Yellow", "White", "Green"]
+    '''
     
+    # For testing the yellow cross
+    side1 = ["White", "Orange", "Yellow",
+             "Green", "Orange", "Orange",
+             "White", "Blue", "Red"]
+
+    side2 = ["Green", "Green", "Orange",
+             "Yellow", "Blue", "Yellow",
+             "Blue", "White", "White"]
+
+    side3 = ["Red", "Yellow", "Green",
+             "Red", "Green", "Orange",
+             "Red", "Green", "Blue"]
+
+    side4 = ["Orange", "White", "Orange",
+             "White", "Yellow", "Green",
+             "Yellow", "Blue", "Green"]
+
+    side5 = ["Red", "Red", "Green",
+             "Red", "White", "Red",
+             "Yellow", "White", "Orange"]
+
+    frontside = ["Blue", "Orange", "Yellow",
+                 "Blue", "Red", "Blue",
+                 "Blue", "Yellow", "White"]
     
     master = ["Front",frontside, "Back",side1, "Left",side2, "Right",side3, "Top",side4, "Bottom",side5]
     return master
