@@ -2,6 +2,7 @@ import time
 import Rubik_Info
 import Solving_algorithm
 import collections
+import pudb
 
 try:
     # for Python 2
@@ -99,7 +100,6 @@ def Solve():
     ErrorText.set("")
     print("In the solve function")
     colors = ["Red", 0, "White", 0, "Yellow", 0, "Green", 0, "Blue", 0, "Orange", 0, "dark gray", 0]  
-
     # Checks to see if there are any gray spots, or if there are more than 9 of a single color
     for i in xrange(1, len(all_sides), 2):
         print("I am in side " + str(all_sides[i-1]))
@@ -130,7 +130,8 @@ def Solve():
                 return
     if (dummy_number == 2):
         dummy_number = 0
-    moves.append((Solving_algorithm.Solve_Cube(canvas, all_sides, dummy_number, ErrorText)))
+    moves.append(Solving_algorithm.Solve_Cube(canvas, all_sides, dummy_number, ErrorText))
+    moves = moves[0]
     FrontRubikCube()
     
     print(str(moves))
@@ -157,8 +158,9 @@ def GoToBeginning():
 
 def NextMove(canvas):
     global moves, BackMessage, temp, all_sides
-    
-    if(len(moves) > 0):
+    # ############################################################
+    # pudb.set_trace()
+    if (len(moves) > 0):
         temp = moves.pop()
         print(str(temp))
         print("Moves are now " + str(moves))
@@ -177,7 +179,7 @@ def NextMove(canvas):
             temp[1] = HorizontalFlip[val]
             print("New temp is " +str(temp))
             
-        BackMessage.set("Go " + temp[1] + " " + str(temp[3]) + " time(s) at row/col " + str(temp[2]))
+        BackMessage.set("Go " + temp[1] + " " + str(temp[3]) + " time(s) at row/col " + str(temp[2]) + " on side " + str(temp[0]))
         Rubik_Info.Before_After(canvas, all_sides, all_sides[all_sides.index("Front")+1], temp)
         FrontRubikCube()
     else:
