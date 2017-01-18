@@ -130,8 +130,8 @@ def Solve():
                 return
     if (dummy_number == 2):
         dummy_number = 0
-    moves.append(Solving_algorithm.Solve_Cube(canvas, all_sides, dummy_number, ErrorText))
-    moves = moves[0]
+    moves.extend(Solving_algorithm.Solve_Cube(canvas, all_sides, dummy_number, ErrorText))
+    # moves = moves[0]
     FrontRubikCube()
     
     print(str(moves))
