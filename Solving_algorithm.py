@@ -24,9 +24,10 @@ def Solve_Cube(canvas, all_Sides, number, ErrorText):
     row_col = 2
     move_amount = 1
     # Delete this if you dont want the rendomizing going on
-    if (number == 7):
+    if (number == 0):
         
         directions = []
+        Left_sides = ["Front", "Left", "Back", "Right"]
         temp_directions = ["Up", "Down", "Left", "Right"]
         temp_sides = ["Front", "Back", "Left", "Right", "Top", "Bottom"]
         for i in range(30):
@@ -38,8 +39,9 @@ def Solve_Cube(canvas, all_Sides, number, ErrorText):
             directions.append((side, direction, row_col, move_amount))
             print("row_col is " + str(row_col) + " and direction is " + str(direction) + " at side " + side)
             #time.sleep(10)
-            
-        return directions
+    
+        
+         return directions
         
 
     '''
@@ -51,10 +53,15 @@ def Solve_Cube(canvas, all_Sides, number, ErrorText):
     # Rotate_Cube(all_Sides,side, all_Sides[side_index], row_col, direction, move_amount)
     '''
     
-    if (number == 0 or number == 1):
+    if (number == 1 or number == 1):
+        # pudb.set_trace()
         cube_rotation_tracker = Yellow_Cross(all_Sides)
         print("These are all the moves to get the yellow flower\n" + str(cube_rotation_tracker))
-        Yellow_to_White_side(all_Sides)
+        cube_rotation_tracker.extend(Yellow_to_White_side(all_Sides))
+        # pudb.set_trace()
+        cube_rotation_tracker.extend(fill_yellow_side(all_Sides))
+        
+        
         '''
         #side = "Front"
         side = "Front"
@@ -72,7 +79,7 @@ def Solve_Cube(canvas, all_Sides, number, ErrorText):
 
 
 def Yellow_to_White_side(full_cube):
-
+    cube_rotations = []
     temp = full_cube[full_cube.index("Bottom") + 1]
     indexes = [i for i, x in enumerate(temp) if x == "Yellow"]
         
@@ -82,18 +89,71 @@ def Yellow_to_White_side(full_cube):
                       or s == 7]
     
     print("Yellow indexes on the yellow side are" + str(yellow_indexes))
-
-    
-    sides = ["Left", "Right", "Back", "Front"]
+    # pudb.set_trace()
+    testing_white_side = 4
+    testing_yellow_side = 0
+    sides = ["Left", "Back", "Right", "Front"]
+    used_sides = []
     print("Front side is " + str(full_cube[full_cube.index("Front") + 1]))
-    time.sleep(10)
-    while (len(yellow_indexes) != 4):
-        
+    # time.sleep(10)
+    n = 0
+    direction = ""
+    turning_side = ""
+    turn_count = 2
+    # pudb.set_trace()
+    while(len(yellow_indexes) != 4):
         for n in range(4):
+            current_side = full_cube[full_cube.index(sides[n]) + 1]
+            middle_index = current_side[4]
+            testing_index = current_side[1]
+            top_side = full_cube[full_cube.index("Top") + 1]
+            top_index = Adjacent_to(sides[n], 1, "Top")
+            if (middle_index == testing_index
+                and top_side[top_index] == "Yellow"):
+                if (sides[n] == "Front"):
+                    turning_side = "Left"
+                    direction = "Up"
+                    row_col = 2
+                    
+                elif (sides[n] == "Back"):
+                    turning_side = "Left"
+                    direction = "Up"
+                    row_col = 0
+                    
+                elif (sides[n] == "Left"):
+                    turning_side = "Front"
+                    direction = "Up"
+                    row_col = 0
+
+                elif (sides[n] == "Right"):
+                    turning_side = "Front"
+                    direction = "Up"
+                    row_col = 2
+
+                Rotate_Cube(full_cube, turning_side, full_cube[full_cube.index(turning_side) + 1], row_col, direction, turn_count)
+                cube_rotations.append([turning_side, direction, row_col, 2])
+        temp = full_cube[full_cube.index("Bottom") + 1]
+        indexes = [i for i, x in enumerate(temp) if x == "Yellow"]
+        
+        yellow_indexes = [s for s in indexes if s == 1
+                          or s == 3
+                          or s == 5
+                          or s == 7]
+        Rotate_Cube(full_cube, "Front", full_cube[full_cube.index("Front") + 1], 0, "Left", 1)
+        cube_rotations.append(["Front", "Left", 0, 1])
+        
+    return cube_rotations
+    '''
+    
+    while (len(yellow_indexes) != 4):
+        for n in range(4):
+            # if (sides[n] in used_sides):
+              #   continue
             # top_index_color = Adjacent_to(sides[n], 1, "Top")
             # if (full_cube[full_cube.index("Top") + 1][top_index_color] == "Yellow"):
                 
-            if (full_cube[full_cube.index(sides[n]) + 1][1] == full_cube[full_cube.index(sides[n]) + 1][4]):
+            if (full_cube[full_cube.index(sides[n]) + 1][1] == full_cube[full_cube.index(sides[n]) + 1][4]
+                and full_cube[full_cube.index("Top") + 1][Adjacent_to(sides[n], 1, "Top")] == "Yellow"):
                 print("The colors are both " + full_cube[full_cube.index(sides[n]) + 1][4] + " on side " + sides[n])
                 current_edges = affected_sides(sides[n])
                 
@@ -103,19 +163,176 @@ def Yellow_to_White_side(full_cube):
                 else:
                     row_col = 2
 
+                # used_sides.append(sides[n])
+                # pudb.set_trace()
+                # Rotate_Cube(full_cube, current_edges[n][0], full_cube[full_cube.index(current_edges[n][0])+1],row_col,  current_edges[n][1], 2)
                 Rotate_Cube(full_cube, current_edges[n][0], full_cube[full_cube.index(current_edges[n][0])+1],row_col,  current_edges[n][1], 2)
-                # cube_rotations.append([current_edges[n][0], current_edges[n][1], row_col, 2])
-
-        Rotate_Cube(full_cube, "Left", full_cube[full_cube.index("Left") + 1], 0, "Left", 1)
-        # cube_rotations.append([current_edges[n][0], current_edges[n][1], row_col, 2])
-        indexes = [i for i, x in enumerate(temp) if x == "Yellow"]
+                
+                cube_rotations.append([current_edges[n][0], current_edges[n][1], row_col, 2])
+                indexes = [i for i, x in enumerate(temp) if x == "Yellow"]
         
-        yellow_indexes = [s for s in indexes if s == 1
-                          or s == 3
-                          or s == 5
-                          or s == 7]
-    Rotate_Cube(full_cube, "Left", full_cube[full_cube.index("Left") + 1], 0, "Right", 1)
+                yellow_indexes = [s for s in indexes if s == 1
+                                  or s == 3
+                                  or s == 5
+                                  or s == 7]
 
+                white_temp = full_cube[full_cube.index("Top") + 1]
+                print("White side is " + str(white_temp))
+                white_cross_index = [j for j, x in enumerate(white_temp)
+                                     if ((x == "Yellow") and
+                                         (j == 1 or j == 3 or
+                                          j == 5 or j == 7))]
+
+                testing_white_side -= 1
+                testing_yellow_side += 1
+                if (testing_white_side != len(white_cross_index)
+                or (testing_yellow_side != len(yellow_indexes))):
+                    # pudb.set_trace()
+                    print("Houston, we have a problem")
+                
+        Rotate_Cube(full_cube, "Left", full_cube[full_cube.index("Left") + 1], 0, "Left", 1)
+        cube_rotations.append(["Left", "Left", 0, 1])
+        
+    Rotate_Cube(full_cube, "Left", full_cube[full_cube.index("Left") + 1], 0, "Right", 1)
+    del cube_rotations[-1]
+
+    return cube_rotations
+    '''
+
+def fill_yellow_side(full_cube):
+    sides = ["Left", "Back", "Right", "Front"]
+    cube_rotations = []
+    three_sides = []
+    found_piece = False
+    left_turn_counter = 0
+    # temp = full_cube[full_cube.index("Bottom") + 1]
+    # pudb.set_trace()
+    for n in range(8):
+        if (n > 3):
+            n = 3 - n
+        '''
+        indexes = [o for o, x in enumerate(temp) if x == "Yellow"]
+        
+        yellow_indexes = [t for t in indexes if t == 1
+                          or t == 3
+                          or t == 5
+                          or t == 7]
+        
+        if (len(yellow_indexes) == 4):
+            break
+        '''
+        current_side = full_cube[full_cube.index(sides[n]) + 1]
+        middle_color = current_side[4]
+        for q in range(6, 9, 2):
+            if (current_side[q] != middle_color):
+                # error_sides.append([sides[n], n])
+                for r in range(4):
+                    temp_side = full_cube[full_cube.index(sides[r]) + 1]
+                    
+                    for s in range(0, 7, 2):
+                        if (s >= 4):
+                            s += 2
+                        if (s == 0):
+                            if (r == 3):
+                                temp_index = 0
+                            else:
+                                temp_index = r + 1
+                            if (n == 3):
+                                p = 0
+                                
+                            else:
+                                p = n + 1
+                            i = 2
+                        elif (s == 2):
+                            if (r == 0):
+                                temp_index = 3
+                            else:
+                                temp_index = r - 1
+                            if (n == 0):
+                                p = 3
+                            else:
+                                p = n -1
+                            i = 0
+                        elif (s == 6):
+                            if (r == 3):
+                                temp_index = 0
+                            else:
+                                temp_index = r + 1
+                            if (n == 3):
+                                p = 0
+                            else:
+                                p = n -1
+                            i = 8
+                        elif (s == 8):
+                            if (r == 0):
+                                temp_index = 3
+                            else:
+                                temp_index = r - 1
+                            if (n == 0):
+                                p = 3
+                            else:
+                                p = n -1
+                            i = 6
+                            
+                        side_middle_color = full_cube[full_cube.index(sides[p]) + 1][4]
+                        three_sides.append(full_cube[full_cube.index(sides[temp_index]) + 1][i])
+                        three_sides.append(temp_side[s])
+                        if (s == 0 or s == 2):
+                            three_sides.append(full_cube[full_cube.index("Top") + 1][Adjacent_to(sides[r], s, "Top")])
+                        else:
+                            three_sides.append(full_cube[full_cube.index("Bottom") + 1][Adjacent_to(sides[r], s, "Bottom")])
+                        if (side_middle_color in three_sides
+                            and middle_color in three_sides
+                            and "Yellow" in three_sides):
+                            print("Hurrah, this actually works!!")
+                            '''
+                            You need to first move the piece into the proper 
+                            side, then you need to use the right/left 
+                            algorithm here and check if its in its proper spot    
+                            '''
+                            if (abs(r-n) != 0):
+                                Rotate_Cube(full_cube, sides[r], temp_side, 0, "Left", abs(r - n))
+                                cube_rotations.append([sides[r], "Left", 0, abs(r-n)])
+
+                            three_sides[:] = []
+                            for z in range(1, 20):
+                                if (s == 0 or s == 6):
+                                    cube_rotations.extend(Left_Algorithm(full_cube, sides[n], False))
+                                    if (n == 3):
+                                        temp_side = full_cube[full_cube.index(sides[0]) + 1]
+                                    else:
+                                        temp_side = full_cube[full_cube.index(sides[n + 1]) + 1]
+                                elif (s == 2 or s == 8):
+                                    cube_rotations.extend(Right_Algorithm(full_cube, sides[n], False))
+
+                                if (s == 0 or s == 2):
+                                    current_interest_index = s + 6
+                                    opposite_interest_index = abs(2 - s) + 6
+                                elif(s == 6 or s == 8):
+                                    current_interest_index = s
+                                    if (s == 6):
+                                        opposite_interest_index = 8
+                                    elif (s == 8):
+                                        opposite_interest_index = 6
+                                if (current_side[current_interest_index] == current_side[4]
+                                    and full_cube[full_cube.index(sides[p]) + 1][opposite_interest_index] == side_middle_color
+                                    and full_cube[full_cube.index("Bottom") + 1][Adjacent_to(sides[n], current_interest_index, "Bottom")] == "Yellow"):
+
+                                    print("Everything is in restoring order now")
+                                    break
+                                
+                            found_piece = True
+                            break
+                                
+                        
+                        three_sides[:] = []
+                    if (found_piece):
+                        found_piece = False
+                        break
+                
+    # print("All the sides that have the errors are " + str(error_sides))
+    return cube_rotations
+    
     
 def Adjacent_to(current_side, current_white_index, adjacent_side):
     [0, 2, 6]
@@ -246,7 +463,44 @@ def Adjacent_to(current_side, current_white_index, adjacent_side):
     # Left side index 5 is adjacent to front side index 3
     # Might not need to return what side its from since the index number
     # identifies what side its on
+
     
+def Right_Algorithm(full_cube, current_side, ignore_last_move):
+    
+    cube_side = full_cube[full_cube.index(current_side) + 1]
+    cube_rotations = []
+    Rotate_Cube(full_cube, current_side, cube_side, 2, "Up", 1)
+    cube_rotations.append([current_side, "Up", 2, 1])
+    Rotate_Cube(full_cube, current_side, cube_side, 0, "Left", 1)
+    cube_rotations.append([current_side, "Left", 0, 1])
+    Rotate_Cube(full_cube, current_side, cube_side, 2, "Down", 1)
+    cube_rotations.append([current_side, "Down", 2, 1])
+    
+    if (not(ignore_last_move)):
+        Rotate_Cube(full_cube, current_side, cube_side, 0, "Right", 1)
+        cube_rotations.append([current_side, "Right", 0, 1])
+
+    return cube_rotations
+
+
+def Left_Algorithm(full_cube, current_side, ignore_last_move):
+
+    cube_side = full_cube[full_cube.index(current_side) + 1]
+    cube_rotations = []
+    
+    Rotate_Cube(full_cube, current_side, cube_side, 0, "Up", 1)
+    cube_rotations.append([current_side, "Up", 0, 1])
+    Rotate_Cube(full_cube, current_side, cube_side, 0, "Right", 1)
+    cube_rotations.append([current_side, "Right", 0, 1])
+    Rotate_Cube(full_cube, current_side, cube_side, 0, "Down", 1)
+    cube_rotations.append([current_side, "Down", 0, 1])
+    
+    if (not(ignore_last_move)):
+        Rotate_Cube(full_cube, current_side, cube_side, 0, "Left", 1)
+        cube_rotations.append([current_side, "Left", 0, 1])
+        
+    return cube_rotations
+
 
 def Yellow_Cross(full_cube):
     cube_rotations = []
@@ -386,6 +640,7 @@ def Yellow_Cross(full_cube):
                                   or s == 7]
             
             if (index_identifier == [0, 3, 6]):
+                pudb.set_trace()
                 if (3 in useful_indexes):
                     if (white_indexes[q][0] in white_cross_index):
                         White_rotation_count += 1
@@ -494,8 +749,70 @@ def Yellow_Cross(full_cube):
         time.sleep(0)
         side_test = [3, 5]
         horizontal_test = [1, 7]
+        yellow_to_white_indexes = [[1, 7], [7, 1], [3, 3], [5, 5]]
         if (q == 4):
-            for n in range(len(useful_indexes)):
+            
+            while(len(useful_indexes) > 0):
+                needs_rotation = False
+                if (1 in useful_indexes):
+                    if (yellow_to_white_indexes[0][1] in white_cross_index):
+                        White_rotation_count += 1
+                        needs_rotation = True
+                    else:
+                        
+                        Rotate_Cube(full_cube, side[q], full_cube[full_cube.index(side[q]) + 1], 0, "Left", 2)
+                        cube_rotations.append([side[q], "Left", 0, 2])
+
+                elif (7 in useful_indexes):
+                    if (yellow_to_white_indexes[1][1] in white_cross_index):
+                        White_rotation_count += 1
+                        needs_rotation = True
+                    else:
+                        
+                        Rotate_Cube(full_cube, side[q], full_cube[full_cube.index(side[q]) + 1], 2, "Left", 2)
+                        cube_rotations.append([side[q], "Left", 2, 2])
+                
+                elif (3 in useful_indexes):
+                    if (yellow_to_white_indexes[2][1] in white_cross_index):
+                        White_rotation_count += 1
+                        needs_rotation = True
+                    else:
+                        
+                        Rotate_Cube(full_cube, side[q], full_cube[full_cube.index(side[q]) + 1], 0, "Up", 2)
+                        cube_rotations.append([side[q], "Up", 0, 2])
+                elif (5 in useful_indexes):
+                    if (white_indexes[3][1] in white_cross_index):
+                        White_rotation_count += 1
+                        needs_rotation = True
+                    else:
+                        Rotate_Cube(full_cube, side[q], full_cube[full_cube.index(side[q]) + 1], 2, "Up", 2)
+                        cube_rotations.append([side[q], "Up", 2, 2])
+
+                if (needs_rotation):
+                    print("We are in side " + side[q] + " and a yellow index on White Side is in 3 or 5 " + str(useful_indexes))
+                    print("We are rotating white side")
+                    Rotate_Cube(full_cube, "Left", full_cube[full_cube.index("Left") + 1], 0, "Left", 1)
+                    cube_rotations.append(["Left", "Left", 0, 1])
+                    
+                indexes = [i for i, x in enumerate(temp) if x == "Yellow"]
+                print("Indexes is " + str(indexes))
+        
+                white_cross_index = [j for j, x in enumerate(white_temp)
+                                     if ((x == "Yellow") and
+                                         (j == 1 or j == 3 or
+                                          j == 5 or j == 7))]
+                print(" White side yellow indexes are now " + str(white_cross_index))
+        
+                useful_indexes = [s for s in indexes if s == 1
+                                  or s == 3
+                                  or s == 5
+                                  or s == 7]
+
+            Rotate_Cube(full_cube, "Left", full_cube[full_cube.index("Left") + 1], 0, "Right", White_rotation_count)
+            if (White_rotation_count != 0):
+                cube_rotations.append(["Left", "Right", 0, White_rotation_count])
+                '''
+                This is the old yellow flower for the bottom side
                 rotated_index = " "
                 if ((useful_indexes[n] in white_cross_index and
                      yellow_side in ["Front", "Back", "Left", "Right"] and
@@ -599,8 +916,8 @@ def Yellow_Cross(full_cube):
                         Rotate_Cube(full_cube, yellow_edges[0][0], full_cube[full_cube.index(yellow_edges[0][0]) + 1], row_col, direction, 1)
                     cube_rotations.append([yellow_edges[0][0], direction, row_col, rotation_turns])
                 print("Yellow side should back in its original indexes now \n" + str(full_cube[full_cube.index(yellow_side) + 1]))
-                time.sleep(10)
-                
+                time.sleep(3)
+                '''
         '''
         if (useful_indexes):
             print("Im in the shifting section")
